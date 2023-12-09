@@ -1,36 +1,33 @@
-const CACHE_NAME = `mi-cahe-temperatura-v1`;
-    
-// Utilice el evento de instalación para almacenar en caché previamente todos los recursos iniciales.
-self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    cache.addAll([
-      './',
-      './converter.js',
-      './converter.css'
-    ]);
-  })());
+const cacheName = 'task-list-v2';
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/tareas.css',
+        '/tareas.js',
+        '/icon.png'
+      ]);
+    })
+  );
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith((async () => {
-    const cache = await caches.open(CACHE_NAME);
-
-    // Obtenga el recurso del caché.
-    const cachedResponse = await cache.match(event.request);
-    if (cachedResponse) {
-      return cachedResponse;
-    } else {
-        try {
-          // If the resource was not in the cache, try the network.
-          const fetchResponse = await fetch(event.request);
-    
-          // Save the resource in the cache and return it.
-          cache.put(event.request, fetchResponse.clone());
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request).then((fetchResponse) => {
+        // Almacena las notas en caché si es una solicitud de API
+        if (event.request.url.includes('/api/')) {
+          return caches.open(cacheName).then((cache) => {
+            cache.put(event.request, fetchResponse.clone());
+            return fetchResponse;
+          });
+        } else {
           return fetchResponse;
-        } catch (e) {
-          // The network failed
         }
-    }
-  })());
+      });
+    })
+  );
 });
