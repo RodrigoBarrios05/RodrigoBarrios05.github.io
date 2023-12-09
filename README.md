@@ -1,5 +1,4 @@
-# Temperature converter - PWA getting started demo app
+# Lista de Notas - PWA 
 
-➡️ **[Open the demo](https://microsoftedge.github.io/Demos/pwa-getting-started/)** ⬅️
+➡️ **[VER APLICACION]([https://microsoftedge.github.io/Demos/pwa-getting-started/](https://rodrigobarrios05.github.io))** ⬅️
 
-This is the source code for the simple PWA demo app used in this PWA getting started tutorial: [Get started with Progressive Web Apps](https://learn.microsoft.com/microsoft-edge/progressive-web-apps-chromium/how-to/).
